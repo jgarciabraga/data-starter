@@ -1,0 +1,30 @@
+[project]
+name = "data-starter"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "jgarciabraga"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "pandas (>=2.2.3,<3.0.0)",
+    "openpyxl (>=3.1.5,<4.0.0)",
+    "pytest (>=8.3.5,<9.0.0)",
+    "blue (>=0.9.1,<0.10.0)",
+    "isort (>=6.0.1,<7.0.0)",
+    "taskipy (>=1.14.1,<2.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "data_starter", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+run = "python3 src/main.py"
+test = "pytest -v"
+format = "poetry run isort . && poetry run blue ."
