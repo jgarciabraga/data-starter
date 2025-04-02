@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 import src.data_starter.extract as extract
 import src.data_starter.transform as transform
+import src.data_starter.load as load
 
 @pytest.fixture
 def mock_inputfolder(tmp_path):
@@ -26,6 +27,12 @@ def mock_cocatenate_data():
     df_final = pd.concat(list_dataframes, ignore_index=True)
 
     return list_dataframes, df_final
+
+@pytest.fixture
+def mock_outputfolder(tmp_path):
+    output_folder = tmp_path / "output_folder"
+    output_folder.mkdir()
+    return str(output_folder)
 
 def test_extract(mock_inputfolder):
     test_path, test_dataframe_list = mock_inputfolder
@@ -57,5 +64,21 @@ def test_transform(mock_cocatenate_data):
     assert len(res_df_final) == len(test_df_final)
 
     pd.testing.assert_frame_equal(res_df_final, test_df_final)
+
+def test_load(mock_outputfolder):
+
+    df_1 = pd.DataFrame({"a": [1, 2], "b": [3, 4]})
+    df_2 = pd.DataFrame({"a": [5, 6], "b": [7, 8]})
+    test_df_final = pd.concat([df_1, df_2], ignore_index=True)
+
+    file_name = "test_output.xlsx"
+
+    load.load_data(test_df_final, file_name, mock_outputfolder) == True
+    assert os.path.exists(os.path.join(mock_outputfolder, file_name))
+    
+    ld_df = pd.read_excel(os.path.join(mock_outputfolder, file_name))
+    pd.testing.assert_frame_equal(ld_df, test_df_final)
+
+
 
 
