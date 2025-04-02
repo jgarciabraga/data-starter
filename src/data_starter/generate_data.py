@@ -57,6 +57,16 @@ def create_dataframe():
     return df
 
 def generate_data(number:int, path:str) -> bool:
+    """
+    Verifica se o número está contido no texto como string.
+
+    Args:
+        numero (int): Amount of dataframes that will be created.
+        texto (str): Path dir to save each dataframe.
+
+    Returns:
+        bool: True se o número estiver contido na string, False caso contrário.
+    """
 
     aux_path = "absenteeism_data_"
     aux_extension = ".xlsx"
@@ -65,6 +75,9 @@ def generate_data(number:int, path:str) -> bool:
     for i in range(number):
         df = create_dataframe()
         file_name = f'{aux_path}{i}{aux_extension}'
+        df.to_excel(os.path.join(path, file_name), index=False)
+    
+    return True
         
 
 
